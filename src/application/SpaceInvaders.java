@@ -26,9 +26,9 @@ import javafx.util.Duration;
 public class SpaceInvaders extends Application {
 
     //variables
-    private static final Random rand = new Random();
-    private static final int width = 800;
-    private static final int height = 600;
+    static final Random rand = new Random();
+    private static final int width = 1280;
+    private static  final int height = 720;
     private static final int player_size = 60;
     static final Image player_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\player.png");
     static final Image explosion_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\explosion.png");
@@ -42,13 +42,17 @@ public class SpaceInvaders extends Application {
     static final int explosion_row = 3;
     static final int explosion_col = 3;
     static final int explosion_height = 128;
-    static final int explosion_frames = 15;
+    public static final int explosion_frames = 15;
 
+
+    public static int getHeight() {
+        return height;
+    }
 
 
     final int max_enemies = 10,  max_shots = max_enemies * 2;
     boolean gameOver = false;
-    private GraphicsContext gc;
+    static GraphicsContext gc;
 
     Player player;
     List<Shot> shots;
@@ -56,7 +60,7 @@ public class SpaceInvaders extends Application {
     List<Enemy> Enemies;
 
     private double mouseX;
-    private int score;
+    static int score;
 
     //start
     public void start(Stage stage) throws Exception {
@@ -166,10 +170,11 @@ public class SpaceInvaders extends Application {
             }
             shot.update();
             shot.draw();
-            for (Enemy bomb : Enemies) {
-                if(shot.collide(bomb) && !bomb.exploding) {
+
+            for (Enemy enemy : Enemies) {
+                if(shot.collide(enemy) && !enemy.exploding) {
                     score++;
-                    bomb.explode();
+                    enemy.explode();
                     shot.toRemove = true;
                 }
             }
@@ -192,141 +197,22 @@ public class SpaceInvaders extends Application {
     }
 
     //player
-    public class Player {
 
-        int posX, posY, size;
-        boolean exploding, destroyed;
-        Image img;
-        int explosionStep = 0;
-
-        public Player(int posX, int posY, int size,  Image image) {
-            this.posX = posX;
-            this.posY = posY;
-            this.size = size;
-            img = image;
-        }
-
-        public Shot shoot() {
-            return new Shot(posX + size / 2 - Shot.size / 2, posY - Shot.size);
-        }
-
-        public void update() {
-            if(exploding) explosionStep++;
-            destroyed = explosionStep > explosion_frames;
-        }
-
-        public void draw() {
-            if(exploding) {
-                gc.drawImage(explosion_png, explosionStep % explosion_col * explosion_width, ((double) explosionStep / explosion_row) * explosion_height + 1,
-                        explosion_width, explosion_height,
-                        posX, posY, size, size);
-            }
-            else {
-                gc.drawImage(img, posX, posY, size, size);
-            }
-        }
-
-        public boolean collision(Player other) {
-            int d = distance(this.posX + size / 2, this.posY + size /2,
-                    other.posX + other.size / 2, other.posY + other.size / 2);
-            return d < other.size / 2 + this.size / 2 ;
-        }
-
-        public void explode() {
-            exploding = true;
-            explosionStep = -1;
-        }
-
-    }
 
     //computer player
-    public class Enemy extends Player {
 
-        int SPEED = (score/5)+2;
-
-        public Enemy(int posX, int posY, int size, Image image) {
-            super(posX, posY, size, image);
-        }
-
-        public void update() {
-            super.update();
-            if(!exploding && !destroyed) posY += SPEED;
-            if(posY > height) destroyed = true;
-        }
-    }
 
     //bullets
-    public class Shot {
-
-        public boolean toRemove;
-
-        int posX, posY, speed = 10;
-        static final int size = 6;
-
-        public Shot(int posX, int posY) {
-            this.posX = posX;
-            this.posY = posY;
-        }
-
-        public void update() {
-            posY-=speed;
-        }
-
-
-        public void draw() {
-            gc.setFill(Color.RED);
-            if (score >=50 && score<=70 || score>=120) {
-                gc.setFill(Color.YELLOWGREEN);
-                speed = 30;
-                gc.fillRect(posX-5, posY-10, size+10, size+30);
-            } else {
-                gc.fillOval(posX, posY, size, size);
-            }
-        }
-
-        public boolean collide(Player player) {
-            int distance = distance(this.posX + size / 2, this.posY + size / 2,
-                    player.posX + player.size / 2, player.posY + player.size / 2);
-            return distance  < player.size / 2 + size / 2;
-        }
-
-
-    }
 
     //environment
-    public class Universe {
-        int posX, posY;
-        private final int h, w, r, g, b;
-        private double opacity;
 
-        public Universe() {
-            posX = rand.nextInt(height);
-            posY = 0;
-            w = rand.nextInt(5) + 1;
-            h =  rand.nextInt(5) + 1;
-            r = rand.nextInt(100) + 150;
-            g = rand.nextInt(100) + 150;
-            b = rand.nextInt(100) + 150;
-            opacity = rand.nextFloat();
-            if(opacity < 0) opacity *=-1;
-            if(opacity > 0.5) opacity = 0.5;
-        }
-
-        public void draw() {
-            if(opacity > 0.8) opacity-=0.01;
-            if(opacity < 0.1) opacity+=0.01;
-            gc.setFill(Color.rgb(r, g, b, opacity));
-            gc.fillOval(posX, posY, w, h);
-            posY+=20;
-        }
-    }
 
     Enemy newEnemy() {
         return new Enemy(150 + rand.nextInt(width - 100), 50 + rand.nextInt(100),
                 player_size, enemies_png[rand.nextInt(enemies_png.length)]);
     }
 
-    int distance(int x1, int y1, int x2, int y2) {
+    static int distance(int x1, int y1, int x2, int y2) {
         return (int) Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
     }
 

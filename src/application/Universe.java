@@ -1,5 +1,6 @@
 package application;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import static application.SpaceInvaders.*;
@@ -28,5 +29,10 @@ public class Universe {
         gc.setFill(Color.rgb(r, g, b, opacity));
         gc.fillOval(posX, posY, w, h);
         posY+=30;
+
+        final Image deathstar_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\deathstar2.png");
+        final Image planet_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\planet.png");
+        gc.drawImage(deathstar_png, 600, 45);
+        gc.drawImage(planet_png, -100, 450);
     }
 }

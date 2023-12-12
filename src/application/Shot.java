@@ -29,7 +29,7 @@ public class Shot {
             speed = 30;
             gc.fillRect(posX-5, posY-10, size+10, size+30);
         } else {
-            gc.fillOval(posX, posY, size, size);
+            gc.fillRect(posX, posY, size - 2, size + 5);
         }
     }
 

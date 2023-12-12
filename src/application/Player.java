@@ -7,7 +7,9 @@ import static application.SpaceInvaders.*;
 
 public class Player {
 
-    int posX, posY, size;
+    public int posX;
+    int posY;
+    int size;
     boolean exploding, destroyed;
     Image img;
     int explosionStep = 0;
@@ -17,6 +19,10 @@ public class Player {
         this.posY = posY;
         this.size = size;
         img = image;
+    }
+
+    int getPosX() {
+        return posX;
     }
 
     public Shot shoot() {

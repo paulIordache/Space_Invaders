@@ -9,7 +9,7 @@ public class Enemy extends Player {
     int SPEED = (score/5)+2;
 
     public Enemy(int posX, int posY, int size, Image image) {
-        super(posX, posY, size, image);
+        super(posX, posY, size - 10, image);
     }
 
     public void update() {

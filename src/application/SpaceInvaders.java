@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.Button;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -27,11 +28,12 @@ public class SpaceInvaders extends Application {
 
     //variables
     static final Random rand = new Random();
-    private static final int width = 1280;
-    private static  final int height = 720;
-    private static final int player_size = 60;
-    static final Image player_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\player.png");
-    static final Image explosion_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\explosion.png");
+    private static final int width = 800;
+    private static  final int height = 600;
+    private static final int player_size = 70;
+    static final Image player_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\player3.png");
+
+    static final Image explosion_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\expl.png");
     static final Image[] enemies_png = {
             new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\retro.png"),
             new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\retro2.png"),
@@ -39,17 +41,14 @@ public class SpaceInvaders extends Application {
             new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\retro4.png"),
     };
     static final int explosion_width = 128;
-    static final int explosion_row = 3;
-    static final int explosion_col = 3;
+    static final int explosion_row = 4;
+    static final int explosion_col = 4;
     static final int explosion_height = 128;
-    public static final int explosion_frames = 15;
-
+    public static final int explosion_frames = 9;
 
     public static int getHeight() {
         return height;
     }
-
-
     final int max_enemies = 10,  max_shots = max_enemies * 2;
     boolean gameOver = false;
     static GraphicsContext gc;
@@ -59,48 +58,20 @@ public class SpaceInvaders extends Application {
     List<Universe> univ;
     List<Enemy> Enemies;
 
-    private double mouseX;
+    private double mouseX = width / 2;
     static int score;
+    static Canvas canvas;
 
     //start
     public void start(Stage stage) throws Exception {
-        Canvas canvas = new Canvas(width, height);
+        canvas = new Canvas(width, height);
+        //Scene scene = new Scene(width, height);
         gc = canvas.getGraphicsContext2D();
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> run(gc)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        canvas.setCursor(Cursor.MOVE);
-        canvas.setOnMouseMoved(e -> mouseX = e.getX());
-//        canvas.setOnKeyPressed(e -> {
-//            if(e.getCode() == KeyCode.RIGHT){
-//                player.posX = player.posX + 10;
-//                //circle.setTranslateX(newX);
-//            }
-//            else if(e.getCode() == KeyCode.LEFT){
-//                player.posX = player.posX - 10;
-//                //circle.setTranslateX(newX);
-//            }
-//            else if(e.getCode() == KeyCode.UP){
-//                player.posY = player.posY - 10;
-//                //circle.setTranslateY(newY);
-//            }
-//            else if(e.getCode() == KeyCode.DOWN){
-//                player.posY = player.posY + 10;
-//                //circle.setTranslateY(newY);
-//            }
-//        });
-        Pane root = new Pane(canvas);
-        Scene scene = new Scene(root);
-        canvas.setOnMouseClicked(e -> {
-                if(shots.size() < max_shots) shots.add(player.shoot());
-                if(gameOver) {
-                    gameOver = false;
-                    setup();
-                }
-        });
-
-
-
+        //canvas.setCursor(Cursor.MOVE);
+        canvas.setFocusTraversable(true);
         setup();
         stage.setScene(new Scene(new StackPane(canvas)));
         stage.setTitle("Space Invaders");
@@ -112,7 +83,13 @@ public class SpaceInvaders extends Application {
         KeyCode key = evt.getCode();
         System.out.println("Key Pressed: " + key);
 
-        if (key == KeyCode.SPACE) {
+        if (key == KeyCode.D) {
+            mouseX = mouseX + 10;
+        }
+        if (key == KeyCode.A) {
+            mouseX = mouseX - 10;
+        }
+        if (key == KeyCode.J) {
             if(shots.size() < max_shots) shots.add(player.shoot());
             if(gameOver) {
                 gameOver = false;
@@ -137,7 +114,7 @@ public class SpaceInvaders extends Application {
         gc.setFill(Color.grayRgb(20));
         gc.fillRect(0, 0, width, height);
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.setFont(Font.font(20));
+        gc.setFont(Font.font("SansSerif", 20));
         gc.setFill(Color.WHITE);
         gc.fillText("Score: " + score, 60,  20);
 
@@ -152,6 +129,9 @@ public class SpaceInvaders extends Application {
 
         player.update();
         player.draw();
+
+        canvas.setOnKeyPressed(e -> keyPressed(e));
+
         player.posX = (int) mouseX;
 
         Enemies.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
@@ -159,8 +139,6 @@ public class SpaceInvaders extends Application {
                 player.explode();
             }
         });
-        
-
 
         for (int i = shots.size() - 1; i >=0 ; i--) {
             Shot shot = shots.get(i);

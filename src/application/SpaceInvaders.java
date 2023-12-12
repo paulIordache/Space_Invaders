@@ -33,7 +33,7 @@ public class SpaceInvaders extends Application {
     private static final int player_size = 70;
     static final Image player_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\player3.png");
 
-    static final Image explosion_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\expl.png");
+
     static final Image[] enemies_png = {
             new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\retro.png"),
             new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\retro2.png"),
@@ -98,7 +98,7 @@ public class SpaceInvaders extends Application {
         }
     }
 
-    //setup the game
+
     private void setup() {
         univ = new ArrayList<>();
         player = new Player(width / 2, height - player_size, player_size, player_png);
@@ -173,16 +173,6 @@ public class SpaceInvaders extends Application {
                 univ.remove(i);
         }
     }
-
-    //player
-
-
-    //computer player
-
-
-    //bullets
-
-    //environment
 
 
     Enemy newEnemy() {

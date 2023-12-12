@@ -21,7 +21,6 @@ public class Shot {
         posY-=speed;
     }
 
-
     public void draw() {
         gc.setFill(Color.RED);
         if (score >=50 && score<=70 || score>=120) {

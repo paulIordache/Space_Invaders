@@ -32,6 +32,7 @@ public class Universe {
 
         final Image deathstar_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\deathstar2.png");
         final Image planet_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\planet.png");
+
         gc.drawImage(deathstar_png, 600, 45);
         gc.drawImage(planet_png, -100, 450);
     }

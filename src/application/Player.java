@@ -7,9 +7,9 @@ import static application.SpaceInvaders.*;
 
 public class Player {
 
+    static final Image explosion_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\expl.png");
     public int posX;
-    int posY;
-    int size;
+    int posY, size;
     boolean exploding, destroyed;
     Image img;
     int explosionStep = 0;

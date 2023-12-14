@@ -29,12 +29,18 @@ public class SpaceInvaders extends Application {
     private static final int player_size = 70;
     static final Image[] player_png = {
             new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\player2.png"),
-            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\player3.png")
+            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\player3.png"),
+            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\player.png")
     };
     int index = 0;
 
     final Image deathstar_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\deathstar2.png");
-    final Image lose_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\lose.png");
+    final Image[] lose_png = {
+            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\lose.png"),
+            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\lose2.png"),
+            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\lose3.png"),
+            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\lose4.png"),
+        };
     static final Image[] enemies_png = {
             new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\enemy.png"),
             new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\enemy2.png"),
@@ -69,14 +75,17 @@ public class SpaceInvaders extends Application {
     private double init_pos = (double) width / 2;
     static int score, final_score;
     static Canvas canvas;
-
+    int i;
+    boolean pause = false;
+    boolean moveleft = false;
+    boolean moveright = false;
     //start
     public void start(Stage stage) throws Exception {
         canvas = new Canvas(width, height);
         //Scene scene = new Scene(width, height);
         gc = canvas.getGraphicsContext2D();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> run(gc)));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(55), e -> run(gc)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         //canvas.setCursor(Cursor.MOVE);
@@ -85,9 +94,8 @@ public class SpaceInvaders extends Application {
 
         setup();
         stage.setScene(new Scene(new StackPane(canvas)));
-        stage.setTitle("Star Wars: Rebels Ressurect");
+        stage.setTitle("Star Wars: Rebels Resurrect");
         stage.show();
-
     }
 
     public void keyPressed(KeyEvent evt) {
@@ -103,7 +111,7 @@ public class SpaceInvaders extends Application {
                 //init_pos= init_pos- 10;
                 ok = 3;
             }
-            if (key == KeyCode.J) {
+            if (key == KeyCode.SPACE) {
                 ok = 3;
             }
             if (key == KeyCode.ENTER) {
@@ -111,20 +119,24 @@ public class SpaceInvaders extends Application {
             }
         } else  if (ok == 3){
             if (key == KeyCode.D) {
-                init_pos = init_pos + 10;
+                moveright = true;
+                //init_pos = init_pos + 10;
             }
             if (key == KeyCode.A) {
-                init_pos= init_pos- 10;
+                moveleft = true;
+                //init_pos= init_pos- 10;
             }
-            if (key == KeyCode.J) {
+            if (key == KeyCode.SPACE) {
                 if (shots.size() < max_shots) shots.add(player.shoot());
                 if (gameOver) {
                     gameOver = false;
                     setup();
                 }
             }
-            if (key == KeyCode.ESCAPE)
+            if (key == KeyCode.ESCAPE) {
+                pause = true;
                 ok = 0;
+            }
         }
 
         if (ok == 1) {
@@ -135,8 +147,11 @@ public class SpaceInvaders extends Application {
                 index = 1;
                 ok = 2;
             }
+            else if (key == KeyCode.DIGIT3) {
+                index = 2;
+                ok = 2;
+            }
         }
-
         if (ok == 4) {
             if (key == KeyCode.ESCAPE) {
                 ok = 0;
@@ -144,7 +159,23 @@ public class SpaceInvaders extends Application {
                 setup();
             }
         }
+    }
 
+    public void keyReleased(KeyEvent evt) {
+        KeyCode key = evt.getCode();
+        System.out.println("Key Released: " + key);
+
+        if (ok == 3) {
+            if (key == KeyCode.A) {
+                moveleft = false;
+                init_pos -= 3;
+            }
+
+            if (key == KeyCode.D) {
+                moveright = false;
+                init_pos += 7;
+            }
+        }
     }
 
     private void setup() {
@@ -168,17 +199,33 @@ public class SpaceInvaders extends Application {
         if (ok == 0) {
             Image logo = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\test.png");
             gc.drawImage(logo, 150,  100);
+            if (pause) {
+                gc.setFont(Font.font(30));
+                gc.setFill(Color.LIGHTGOLDENRODYELLOW);
+                gc.fillText("PAUSE", (double) width / 2, 30);
+            }
+
             canvas.setOnKeyPressed(this::keyPressed);
         } else if (ok == 1) {
+
+
             gc.setFont(Font.font("SansSerif", 30));
             gc.setFill(Color.LIGHTGOLDENRODYELLOW);
             gc.fillText("Choose Player", (double) width / 2, 500);
 
             Image icon1_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon1.png");
             Image icon2_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon2.png");
+            Image icon3_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon3.png");
+            Image icon4_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon4.png");
+            Image icon5_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon5.png");
+            Image icon6_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon6.png");
 
-            gc.drawImage(icon1_png, (double) width / 2 - 350, (double) height / 2 - 100);
-            gc.drawImage(icon2_png, (double) width / 2 + 150, (double) height / 2 - 100);
+            gc.drawImage(icon1_png, (double) width / 2 - 400, (double) height / 2 - 70);
+            gc.drawImage(icon2_png, (double) width / 2 - 100, (double) height / 2 - 70);
+            gc.drawImage(icon3_png, (double) width / 2 + 200, (double) height / 2 - 70);
+            gc.drawImage(icon5_png, (double) width / 2 - 350, 40);
+            gc.drawImage(icon4_png, (double) width / 2 - 50, 40);
+            gc.drawImage(icon6_png, (double) width / 2 + 250, 40);
 
             canvas.setOnKeyPressed(this::keyPressed);
             setup();
@@ -187,11 +234,25 @@ public class SpaceInvaders extends Application {
             setup();
         }
         else if (ok == 3) {
+
+            if (moveright)
+                init_pos += 20;
+
+            if(moveleft)
+                init_pos -= 20;
+            pause = false;
             gc.setFont(Font.font("SansSerif", 20));
             gc.setFill(Color.WHITE);
             gc.fillText("Score: " + final_score, 60, 20);
 
+            if (score < 70) {
+                gc.setFill(Color.RED);
+                gc.fillRect(10, 30, score * 2,15);
+            }
+
             if (gameOver) {
+                i = rand.nextInt(0, 4);
+                System.out.println(i);
                 ok = 4;
             } else final_score = score;
             univ.forEach(Universe::draw);
@@ -202,6 +263,7 @@ public class SpaceInvaders extends Application {
             deathStar.draw();
 
             canvas.setOnKeyPressed(this::keyPressed);
+            canvas.setOnKeyReleased(this::keyReleased);
             //canvas.setOnKeyTyped(e -> keyPressed(e));
 
             player.posX = (int) init_pos;
@@ -247,7 +309,7 @@ public class SpaceInvaders extends Application {
             }
         }
         else if (ok == 4) {
-            gc.drawImage(lose_png, 0, 0);
+            gc.drawImage(lose_png[i], 0, 0);
             gc.setFont(Font.font(35));
             gc.setFill(Color.LIGHTGOLDENRODYELLOW);
             gc.fillText("GAME OVER", (double) width / 2, 100);
@@ -259,7 +321,7 @@ public class SpaceInvaders extends Application {
     }
 
     Enemy newEnemy() {
-        return new Enemy(150 + rand.nextInt(width - 100), 50 + rand.nextInt(100),
+        return new Enemy(rand.nextInt(width - 90), rand.nextInt(100),
                 player_size, enemies_png[rand.nextInt(enemies_png.length)]);
     }
 

@@ -23,15 +23,15 @@ public class DeathStar {
         if(exploding) explosionStepDeath++;
         destroyed = explosionStepDeath > explosionDeath_frames;
     }
-    public void update(int explosion_frames) {
-        if(exploding) explosionStepDeath++;
-        destroyed = explosionStepDeath > explosion_frames;
-    }
+//    public void update(int explosion_frames) {
+//        if(exploding) explosionStepDeath++;
+//        destroyed = explosionStepDeath > explosion_frames;
+//    }
 
 
     public void draw() {
         if(exploding) {
-            gc.drawImage(explosion2_png, explosionStepDeath % explosion_colD * explosion_widthD,
+            gc.drawImage(explosion2_png, (explosionStepDeath % explosion_colD) * explosion_widthD + 1,
                     ((double) explosionStepDeath / explosion_rowD) * explosion_heightD + 1,
                     explosion_widthD, explosion_heightD,
                     posX, posY, size, size);

@@ -36,7 +36,7 @@ public class Player {
 
     public void draw() {
         if(exploding) {
-            gc.drawImage(explosion_png, explosionStep % explosion_col * explosion_width, ((double) explosionStep / explosion_row) * explosion_height + 1,
+            gc.drawImage(explosion_png, (explosionStep % explosion_col) * explosion_width, ((double) explosionStep / explosion_row) * explosion_height + 1,
                     explosion_width, explosion_height,
                     posX, posY, size, size);
         }

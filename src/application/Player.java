@@ -7,7 +7,7 @@ import static application.SpaceInvaders.*;
 
 public class Player {
 
-    static final Image explosion_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\expl.png");
+    static final Image explosion_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\explosion.png");
     public int posX;
     int posY, size;
     boolean exploding, destroyed;
@@ -36,7 +36,8 @@ public class Player {
 
     public void draw() {
         if(exploding) {
-            gc.drawImage(explosion_png, (explosionStep % explosion_col) * explosion_width, ((double) explosionStep / explosion_row) * explosion_height + 1,
+            gc.drawImage(explosion_png, (explosionStep % explosion_col) * explosion_width + 1,
+                    (explosionStep / explosion_row) * explosion_height + 1,
                     explosion_width, explosion_height,
                     posX, posY, size, size);
         }

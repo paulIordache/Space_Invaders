@@ -48,13 +48,13 @@ public class SpaceInvaders extends Application {
     static final int explosion_width = 128;
     static final int explosion_widthD = 128;
     static final int explosion_row = 4;
-    static final int explosion_col = 2;
+    static final int explosion_col = 4;
 
     static final int explosion_rowD = 4;
     static final int explosion_colD = 4;
-    static final int explosion_height = 256;
+    static final int explosion_height = 128;
     static final int explosion_heightD = 128;
-    public static final int explosion_frames = 9;
+    public static final int explosion_frames = 8;
     public static final int explosionDeath_frames = 16;
 
     public static int getHeight() {
@@ -85,7 +85,7 @@ public class SpaceInvaders extends Application {
         //Scene scene = new Scene(width, height);
         gc = canvas.getGraphicsContext2D();
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(55), e -> run(gc)));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(70), e -> run(gc)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         //canvas.setCursor(Cursor.MOVE);
@@ -192,26 +192,26 @@ public class SpaceInvaders extends Application {
     }
 
     private void run(GraphicsContext gc) {
-        gc.setFill(Color.grayRgb(20));
+        gc.setFill(Color.grayRgb(13));
         gc.fillRect(0, 0, width, height);
         gc.setTextAlign(TextAlignment.CENTER);
 
         if (ok == 0) {
             Image logo = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\test.png");
             gc.drawImage(logo, 150,  100);
+
             if (pause) {
                 gc.setFont(Font.font(30));
                 gc.setFill(Color.LIGHTGOLDENRODYELLOW);
-                gc.fillText("PAUSE", (double) width / 2, 30);
+                gc.fillText("PAUSE", width / 2, 30);
             }
-
             canvas.setOnKeyPressed(this::keyPressed);
         } else if (ok == 1) {
 
 
             gc.setFont(Font.font("SansSerif", 30));
             gc.setFill(Color.LIGHTGOLDENRODYELLOW);
-            gc.fillText("Choose Player", (double) width / 2, 500);
+            gc.fillText("Choose Player", width / 2, 500);
 
             Image icon1_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon1.png");
             Image icon2_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon2.png");
@@ -220,12 +220,12 @@ public class SpaceInvaders extends Application {
             Image icon5_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon5.png");
             Image icon6_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon6.png");
 
-            gc.drawImage(icon1_png, (double) width / 2 - 400, (double) height / 2 - 70);
-            gc.drawImage(icon2_png, (double) width / 2 - 100, (double) height / 2 - 70);
-            gc.drawImage(icon3_png, (double) width / 2 + 200, (double) height / 2 - 70);
-            gc.drawImage(icon5_png, (double) width / 2 - 350, 40);
-            gc.drawImage(icon4_png, (double) width / 2 - 50, 40);
-            gc.drawImage(icon6_png, (double) width / 2 + 250, 40);
+            gc.drawImage(icon1_png, width / 2 - 400, height / 2 - 70);
+            gc.drawImage(icon2_png, width / 2 - 100,  height / 2 - 70);
+            gc.drawImage(icon3_png,  width / 2 + 200, height / 2 - 70);
+            gc.drawImage(icon5_png,  width / 2 - 350, 40);
+            gc.drawImage(icon4_png, width / 2 - 50, 40);
+            gc.drawImage(icon6_png, width / 2 + 250, 40);
 
             canvas.setOnKeyPressed(this::keyPressed);
             setup();
@@ -234,12 +234,13 @@ public class SpaceInvaders extends Application {
             setup();
         }
         else if (ok == 3) {
-
+            gc.setFill(Color.grayRgb(20));
+            gc.fillRect(0, 0, width, height);
             if (moveright)
-                init_pos += 20;
+                init_pos += 15;
 
             if(moveleft)
-                init_pos -= 20;
+                init_pos -= 15;
             pause = false;
             gc.setFont(Font.font("SansSerif", 20));
             gc.setFill(Color.WHITE);
@@ -312,10 +313,10 @@ public class SpaceInvaders extends Application {
             gc.drawImage(lose_png[i], 0, 0);
             gc.setFont(Font.font(35));
             gc.setFill(Color.LIGHTGOLDENRODYELLOW);
-            gc.fillText("GAME OVER", (double) width / 2, 100);
+            gc.fillText("GAME OVER", width / 2, 100);
             gc.setFont(Font.font(25));
             gc.setFill(Color.LIGHTGOLDENRODYELLOW);
-            gc.fillText("Your Score is: " + final_score + "\n Try Again? (ESCAPE)", (double) width / 2, 500);
+            gc.fillText("Your Score is: " + final_score + "\n Try Again? (ESCAPE)", width / 2, 500);
             canvas.setOnKeyPressed(this::keyPressed);
         }
     }

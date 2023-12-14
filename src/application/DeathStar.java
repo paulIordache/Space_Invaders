@@ -28,11 +28,10 @@ public class DeathStar {
 //        destroyed = explosionStepDeath > explosion_frames;
 //    }
 
-
     public void draw() {
         if(exploding) {
-            gc.drawImage(explosion2_png, (explosionStepDeath % explosion_colD) * explosion_widthD + 1,
-                    ((double) explosionStepDeath / explosion_rowD) * explosion_heightD + 1,
+            gc.drawImage(explosion2_png, (explosionStepDeath % explosion_rowD) * explosion_widthD + 1,
+                    ( explosionStepDeath / explosion_colD) * explosion_heightD + 1,
                     explosion_widthD, explosion_heightD,
                     posX, posY, size, size);
         }

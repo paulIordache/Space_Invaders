@@ -34,11 +34,10 @@ public class SpaceInvaders extends Application {
     int index = 0;
 
     final Image deathstar_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\deathstar2.png");
+    final Image lose_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\lose.png");
     static final Image[] enemies_png = {
-            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\retro.png"),
-            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\retro2.png"),
-            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\retro3.png"),
-            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\retro4.png"),
+            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\enemy.png"),
+            new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\enemy2.png"),
     };
     static final int explosion_width = 128;
     static final int explosion_widthD = 128;
@@ -67,7 +66,7 @@ public class SpaceInvaders extends Application {
     List<Universe> univ;
     List<Enemy> Enemies;
 
-    private double mouseX = (double) width / 2;
+    private double init_pos = (double) width / 2;
     static int score, final_score;
     static Canvas canvas;
 
@@ -86,7 +85,7 @@ public class SpaceInvaders extends Application {
 
         setup();
         stage.setScene(new Scene(new StackPane(canvas)));
-        stage.setTitle("Space Invaders");
+        stage.setTitle("Star Wars: Rebels Ressurect");
         stage.show();
 
     }
@@ -97,11 +96,11 @@ public class SpaceInvaders extends Application {
 
         if (ok == 0) {
             if (key == KeyCode.D) {
-                //mouseX = mouseX + 10;
+                //init_pos= init_pos+ 10;
                 ok = 3;
             }
             if (key == KeyCode.A) {
-                //mouseX = mouseX - 10;
+                //init_pos= init_pos- 10;
                 ok = 3;
             }
             if (key == KeyCode.J) {
@@ -110,12 +109,12 @@ public class SpaceInvaders extends Application {
             if (key == KeyCode.ENTER) {
                 ok = 1;
             }
-        } else {
+        } else  if (ok == 3){
             if (key == KeyCode.D) {
-                mouseX = mouseX + 10;
+                init_pos = init_pos + 10;
             }
             if (key == KeyCode.A) {
-                mouseX = mouseX - 10;
+                init_pos= init_pos- 10;
             }
             if (key == KeyCode.J) {
                 if (shots.size() < max_shots) shots.add(player.shoot());
@@ -124,6 +123,8 @@ public class SpaceInvaders extends Application {
                     setup();
                 }
             }
+            if (key == KeyCode.ESCAPE)
+                ok = 0;
         }
 
         if (ok == 1) {
@@ -136,6 +137,14 @@ public class SpaceInvaders extends Application {
             }
         }
 
+        if (ok == 4) {
+            if (key == KeyCode.ESCAPE) {
+                ok = 0;
+                gameOver = false;
+                setup();
+            }
+        }
+
     }
 
     private void setup() {
@@ -145,6 +154,7 @@ public class SpaceInvaders extends Application {
         deathStar = new DeathStar(600, 45, 200, deathstar_png);
         shots = new ArrayList<>();
         Enemies = new ArrayList<>();
+        init_pos = (double) width / 2;
 
         score = 0;
         IntStream.range(0, max_enemies).mapToObj(i -> this.newEnemy()).forEach(Enemies::add);
@@ -156,25 +166,19 @@ public class SpaceInvaders extends Application {
         gc.setTextAlign(TextAlignment.CENTER);
 
         if (ok == 0) {
-            gc.setFont(Font.font("SansSerif", 30));
-            gc.setFill(Color.YELLOW);
-            gc.fillText("Press 'A' or 'D' to START", (double) width / 2, 500);
-
-            Image starwars_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\starwars.png");
-            gc.drawImage(starwars_png, 150,  20);
-
+            Image logo = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\test.png");
+            gc.drawImage(logo, 150,  100);
             canvas.setOnKeyPressed(this::keyPressed);
-            //gc.clearRect(width, width, 400, 600);
         } else if (ok == 1) {
             gc.setFont(Font.font("SansSerif", 30));
-            gc.setFill(Color.YELLOW);
+            gc.setFill(Color.LIGHTGOLDENRODYELLOW);
             gc.fillText("Choose Player", (double) width / 2, 500);
 
             Image icon1_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon1.png");
             Image icon2_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\icon2.png");
 
-            gc.drawImage(icon1_png, width / 2 - 350, height / 2 - 100);
-            gc.drawImage(icon2_png, width / 2 + 150, height / 2 - 100);
+            gc.drawImage(icon1_png, (double) width / 2 - 350, (double) height / 2 - 100);
+            gc.drawImage(icon2_png, (double) width / 2 + 150, (double) height / 2 - 100);
 
             canvas.setOnKeyPressed(this::keyPressed);
             setup();
@@ -188,10 +192,7 @@ public class SpaceInvaders extends Application {
             gc.fillText("Score: " + final_score, 60, 20);
 
             if (gameOver) {
-                gc.setFont(Font.font(35));
-                gc.setFill(Color.YELLOW);
-                gc.fillText("Game Over \n Your Score is: " + final_score + " \n Click to play again", (double) width / 2, height / 2.5);
-                //	return;
+                ok = 4;
             } else final_score = score;
             univ.forEach(Universe::draw);
 
@@ -203,7 +204,7 @@ public class SpaceInvaders extends Application {
             canvas.setOnKeyPressed(this::keyPressed);
             //canvas.setOnKeyTyped(e -> keyPressed(e));
 
-            player.posX = (int) mouseX;
+            player.posX = (int) init_pos;
 
             Enemies.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
                 if (player.collision(e) && !player.exploding) {
@@ -244,6 +245,16 @@ public class SpaceInvaders extends Application {
                 if (univ.get(i).posY > height)
                     univ.remove(i);
             }
+        }
+        else if (ok == 4) {
+            gc.drawImage(lose_png, 0, 0);
+            gc.setFont(Font.font(35));
+            gc.setFill(Color.LIGHTGOLDENRODYELLOW);
+            gc.fillText("GAME OVER", (double) width / 2, 100);
+            gc.setFont(Font.font(25));
+            gc.setFill(Color.LIGHTGOLDENRODYELLOW);
+            gc.fillText("Your Score is: " + final_score + "\n Try Again? (ESCAPE)", (double) width / 2, 500);
+            canvas.setOnKeyPressed(this::keyPressed);
         }
     }
 

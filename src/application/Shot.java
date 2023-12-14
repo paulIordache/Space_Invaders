@@ -23,13 +23,7 @@ public class Shot {
 
     public void draw() {
         gc.setFill(Color.RED);
-        if (score >=50 && score<=70 || score>=120) {
-            gc.setFill(Color.YELLOWGREEN);
-            speed = 30;
-            gc.fillRect(posX-5, posY-10, size+10, size+30);
-        } else {
-            gc.fillRect(posX, posY, size - 2, size + 5);
-        }
+        gc.fillRect(posX, posY, size - 2, size + 5);
     }
 
     public boolean collide(Player player) {

@@ -1,8 +1,6 @@
 package application;
 
-import application.Player;
 import javafx.scene.paint.Color;
-
 import static application.SpaceInvaders.*;
 
 public class Shot {

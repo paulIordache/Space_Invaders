@@ -23,10 +23,6 @@ public class DeathStar {
         if(exploding) explosionStepDeath++;
         destroyed = explosionStepDeath > explosionDeath_frames;
     }
-//    public void update(int explosion_frames) {
-//        if(exploding) explosionStepDeath++;
-//        destroyed = explosionStepDeath > explosion_frames;
-//    }
 
     public void draw() {
         if(exploding) {

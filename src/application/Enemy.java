@@ -1,6 +1,5 @@
 package application;
 
-import application.Player;
 import javafx.scene.image.Image;
 import static application.SpaceInvaders.score;
 

@@ -1,8 +1,6 @@
 package application;
 
-import application.SpaceInvaders;
 import javafx.scene.image.Image;
-
 import static application.SpaceInvaders.*;
 
 public class Player {
@@ -19,10 +17,6 @@ public class Player {
         this.posY = posY;
         this.size = size;
         img = image;
-    }
-
-    int getPosX() {
-        return posX;
     }
 
     public Shot shoot() {

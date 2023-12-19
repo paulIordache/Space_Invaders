@@ -5,7 +5,7 @@ import static application.SpaceInvaders.score;
 
 public class Enemy extends Player {
 
-    int SPEED = (score/5)+10;
+    int SPEED = (score/5)+20;
 
     public Enemy(int posX, int posY, int size, Image image) {
         super(posX, posY, size - 10, image);

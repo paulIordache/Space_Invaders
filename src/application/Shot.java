@@ -7,7 +7,7 @@ public class Shot {
 
     public boolean toRemove;
 
-    int posX, posY, speed = 10;
+    int posX, posY, speed = 16;
     static final int size = 6;
 
     public Shot(int posX, int posY) {
@@ -29,6 +29,4 @@ public class Shot {
                 player.posX + player.size / 2, player.posY + player.size / 2);
         return distance  < player.size / 2 + size / 2;
     }
-
-
 }

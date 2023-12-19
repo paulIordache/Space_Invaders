@@ -31,9 +31,8 @@ public class DeathStar {
                     explosion_widthD, explosion_heightD,
                     posX, posY, size, size);
         }
-        else {
+        else
             gc.drawImage(img, posX, posY, size, size);
-        }
     }
 
     public void explode() {

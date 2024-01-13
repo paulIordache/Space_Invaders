@@ -3,14 +3,14 @@ package application;
 import javafx.scene.paint.Color;
 import static application.SpaceInvaders.*;
 
-public class Shot {
+public class Laser {
 
     public boolean toRemove;
 
     int posX, posY, speed = 16;
     static final int size = 6;
 
-    public Shot(int posX, int posY) {
+    public Laser(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
     }

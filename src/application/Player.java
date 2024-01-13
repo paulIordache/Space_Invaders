@@ -19,8 +19,8 @@ public class Player {
         img = image;
     }
 
-    public Shot shoot() {
-        return new Shot(posX + size / 2 - Shot.size / 2, posY - Shot.size);
+    public Laser shoot() {
+        return new Laser(posX + size / 2 - Laser.size / 2, posY - Laser.size);
     }
 
     public void update() {

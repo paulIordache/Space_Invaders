@@ -34,6 +34,7 @@ public class SpaceInvaders extends Application {
     };
     int index = 0;
 
+    final Image win_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\win2.png");
     final Image deathstar_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\deathstar.png");
     final Image bridge_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\bridge.png");
     final Image[] lose_png = {
@@ -70,8 +71,7 @@ public class SpaceInvaders extends Application {
     static int ok = 0;
     Player player;
 
-    DeathStar deathStar;
-    List<Shot> shots;
+    List<Laser> shots;
     List<Universe> univ;
     List<Enemy> Enemies;
 
@@ -167,6 +167,14 @@ public class SpaceInvaders extends Application {
             if (key == KeyCode.ENTER)
                 ok = 6;
         }
+
+        if (ok == 7) {
+            if (key == KeyCode.ENTER) {
+                setup();
+                ok = 0;
+            }
+
+        }
     }
 
     public void keyReleased(KeyEvent evt) {
@@ -190,7 +198,6 @@ public class SpaceInvaders extends Application {
         univ = new ArrayList<>();
         canvas.setOnKeyPressed(this::keyPressed);
         player = new Player(width / 2, height - player_size, player_size, player_png[index]);
-        deathStar = new DeathStar(600, 45, 200, deathstar_png);
         shots = new ArrayList<>();
         Enemies = new ArrayList<>();
         init_pos = (double) width / 2;
@@ -270,10 +277,23 @@ public class SpaceInvaders extends Application {
                 gc.setFill(Color.WHITE);
                 gc.fillText("Score: " + final_score, 60, 20);
 
+
                 if (score < 1) {
-                    gc.setFill(Color.RED);
-                    gc.fillRect(10, 30, score * 2, 15);
-                } else ok = 5;
+                    if (!change_level) {
+                        gc.setFill(Color.RED);
+                        gc.fillRect(10, 30, score * 3, 15);
+                    } else {
+                        gc.setFill(Color.BLUE);
+                        gc.fillRect(10, 30, score * 3, 15);
+                    }
+                } else {
+                    if (!change_level) {
+                        ok = 5;
+                    } else {
+
+                        ok = 7;
+                    }
+                }
 
                 if (gameOver) {
                     universe = 20;
@@ -304,11 +324,10 @@ public class SpaceInvaders extends Application {
                 Enemies.stream().peek(Player::update).peek(Player::draw).forEach(e -> {
                     if (player.collision(e) && !player.exploding) {
                         player.explode();
-                        deathStar.explode();
                     }
                 });
                 for (int i = shots.size() - 1; i >= 0; i--) {
-                    Shot shot = shots.get(i);
+                    Laser shot = shots.get(i);
                     if (shot.posY < 0 || shot.toRemove) {
                         shots.remove(i);
                         continue;
@@ -349,6 +368,7 @@ public class SpaceInvaders extends Application {
                 canvas.setOnKeyPressed(this::keyPressed);
             }
             case 5 -> {
+                change_level = true;
                 init_pos = width / 2;
                 gc.drawImage(bridge_png, 0, 0);
                 gc.setFont(Font.font("Lucida Console", 30));
@@ -359,11 +379,24 @@ public class SpaceInvaders extends Application {
                 canvas.setOnKeyPressed(this::keyPressed);
             }
             case 6 -> {
+
                 ok = 3;
                 change_level = true;
                 universe = 0;
                 gc.drawImage(bridge_png, 0, 0);
                 setup();
+            }
+            case 7 -> {
+                universe = 20;
+                gc.drawImage(win_png, 10, 0);
+                gc.setFont(Font.font("Lucida Console", 30));
+                gc.setFill(Color.LIGHTGOLDENRODYELLOW);
+                gc.fillText("You win!\nThe Galaxy is, once again, at peace...", width / 2, 60);
+                gc.setFont(Font.font("Lucida Console", 25));
+                gc.fillText("Play Again? Press ENTER", width / 2, 550);
+
+                change_level = false;
+                canvas.setOnKeyPressed(this::keyPressed);
             }
             default -> {
             }
@@ -373,10 +406,6 @@ public class SpaceInvaders extends Application {
     Enemy newEnemy() {
         return new Enemy(rand.nextInt(width - 90) + rand.nextInt(100), rand.nextInt(50),
                 player_size, enemies_png[rand.nextInt(enemies_png.length)]);
-    }
-
-    DeathStar newDeathStar() {
-        return new DeathStar(600, 45, 300, deathstar_png);
     }
 
     static int distance(int x1, int y1, int x2, int y2) {

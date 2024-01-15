@@ -50,21 +50,14 @@ public class SpaceInvaders extends Application {
 
     Image level2_png = new Image("file:C:\\Users\\Paul\\Desktop\\SpaceInvaders\\sprites\\level2.png");
     static final int explosion_width = 128;
-    static final int explosion_widthD = 128;
     static final int explosion_row = 4;
     static final int explosion_col = 4;
-
-    static final int explosion_rowD = 4;
-    static final int explosion_colD = 4;
     static final int explosion_height = 128;
-    static final int explosion_heightD = 128;
     public static final int explosion_frames = 8;
-    public static final int explosionDeath_frames = 16;
 
     public static int getHeight() {
         return height;
     }
-    public static int getWidth() { return width; }
     final int max_enemies = 6,  max_shots = max_enemies * 2;
     boolean gameOver = false;
     public static GraphicsContext gc;
@@ -312,9 +305,6 @@ public class SpaceInvaders extends Application {
                 univ.forEach(Universe::draw);
                 player.update();
                 player.draw();
-
-//                deathStar.update();
-//                deathStar.draw();
 
                 canvas.setOnKeyPressed(this::keyPressed);
                 canvas.setOnKeyReleased(this::keyReleased);
